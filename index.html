@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>AI Social Media Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            /* Light Mode Colors - Ultra High Contrast */
+            --primary-gradient: linear-gradient(135deg, #0066ff 0%, #8b00ff 100%);
+            --secondary-gradient: linear-gradient(135deg, #ff0066, #00ffcc);
+            --accent-gradient: linear-gradient(135deg, #ff3366, #ff6600);
+            --success-gradient: linear-gradient(135deg, #00ff88, #0099ff);
+            --warning-gradient: linear-gradient(135deg, #ffcc00, #ff6600);
+            --danger-gradient: linear-gradient(135deg, #ff0033, #cc0066);
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #f0f8ff;
+            --bg-tertiary: #e6f3ff;
+            --text-primary: #000000;
+            --text-secondary: #1a1a1a;
+            --text-muted: #333333;
+            --border-color: #0066ff;
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --shadow-medium: rgba(0, 0, 0, 0.3);
+            --shadow-heavy: rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode Colors - Ultra High Contrast */
+            --primary-gradient: linear-gradient(135deg, #0066ff 0%, #8b00ff 100%);
+            --secondary-gradient: linear-gradient(135deg, #ff0066, #00ffcc);
+            --accent-gradient: linear-gradient(135deg, #ff3366, #ff6600);
+            --success-gradient: linear-gradient(135deg, #00ff88, #0099ff);
+            --warning-gradient: linear-gradient(135deg, #ffcc00, #ff6600);
+            --danger-gradient: linear-gradient(135deg, #ff0033, #cc0066);
+            
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #f0f0f0;
+            --text-muted: #cccccc;
+            --border-color: #00ffcc;
+            --shadow-light: rgba(255, 255, 255, 0.1);
+            --shadow-medium: rgba(255, 255, 255, 0.2);
+            --shadow-heavy: rgba(255, 255, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-gradient);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Top Controls Container */
+        .top-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 0;
+            border-radius: 50px;
+            background: var(--bg-primary);
+            box-shadow: 0 8px 32px var(--shadow-medium);
+            overflow: hidden;
+            border: 3px solid var(--border-color);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-primary);
+            border: none;
+            border-radius: 0;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            background: var(--danger-gradient);
+            color: white;
+            border: none;
+            border-radius: 0;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .logout-btn:hover {
+            background: var(--accent-gradient);
+        }
+
+        /* Landing Page - Clean Full Screen */
+        .landing-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--secondary-gradient);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .landing-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .landing-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 40px;
+        }
+
+        .landing-title {
+            font-size: clamp(48px, 12vw, 96px);
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: white;
+            text-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .landing-subtitle {
+            font-size: clamp(18px, 4vw, 28px);
+            font-weight: 400;
+            margin-bottom: 60px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            max-width: 800px;
+        }
+
+        .landing-login-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 20px 50px;
+            border-radius: 60px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .landing-login-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Welcome Header - Hidden Initially */
+        .welcome-header {
+            text-align: center;
+            padding: 60px 30px;
+            background: var(--secondary-gradient);
+            color: white;
+            box-shadow: 0 15px 50px var(--shadow-heavy);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            overflow: hidden;
+            display: none;
+        }
+
+        .welcome-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .welcome-header h1 {
+            font-size: clamp(32px, 8vw, 64px);
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+            animation: glow 3s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes glow {
+            from { 
+                text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.3); 
+            }
+            to { 
+                text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4), 0 0 50px rgba(255, 255, 255, 0.6); 
+            }
+        }
+
+        .welcome-header p {
+            font-size: clamp(16px, 4vw, 24px);
+            font-weight: 500;
+            margin: 20px 0 0 0;
+            opacity: 0.95;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-secondary);
+            padding: 20px;
+            overflow-y: auto;
+            padding-top: 50px;
+        }
+
+        /* Welcome Popup */
+        .welcome-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .popup-content {
+            background: var(--bg-primary);
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 30px 100px var(--shadow-heavy);
+            border: 6px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { 
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popup-content::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: var(--secondary-gradient);
+            border-radius: 33px;
+            z-index: -1;
+        }
+
+        .popup-title {
+            font-size: clamp(32px, 8vw, 48px);
+            font-weight: 900;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .popup-message {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .popup-close {
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .popup-close:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--shadow-heavy);
+        }
+
+        .login-form {
+            background: var(--bg-primary);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 80px var(--shadow-heavy);
+            width: 100%;
+            max-width: 500px;
+            border: 4px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            overflow: visible;
+            margin: 20px auto;
+            min-height: auto;
+        }
+
+        .back-to-landing {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .back-to-landing:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-medium);
+        }
+
+        .login-form::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--secondary-gradient);
+            border-radius: 32px;
+            z-index: -1;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 40px;
+            font-size: clamp(24px, 6vw, 36px);
+            font-weight: 800;
+            text-shadow: none;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 18px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: transparent;
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3), 0 8px 25px var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 20px;
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px var(--shadow-heavy);
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn:hover {
+            border-color: #4285f4;
+            background: #4285f4;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.3);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            color: var(--text-muted);
+            position: relative;
+            font-weight: 600;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .divider span {
+            background: var(--bg-primary);
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 320px;
+            width: calc(100% - 320px);
+            height: 100vh;
+            background: var(--bg-secondary);
+            overflow-y: auto;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: 100%;
+        }
+
+        /* Left Navigation Bar - Hidden Initially */
+        .navbar {
+            width: 320px;
+            background: var(--bg-primary);
+            padding: 40px 0;
+            box-shadow: 8px 0 30px var(--shadow-medium);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 4px solid transparent;
+            background-clip: padding-box;
+            z-index: 99;
+            display: none;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -4px;
+            width: 4px;
+            height: 100%;
+            background: var(--secondary-gradient);
+        }
+
+        .navbar h3 {
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navbar a {
+            display: flex;
+            align-items: center;
+            width: 85%;
+            margin: 12px 7.5%;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 20px 25px;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 25px;
+            border: 3px solid var(--border-color);
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            min-height: 65px;
+            gap: 12px;
+        }
+
+        .navbar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .navbar a:hover::before {
+            left: 0;
+        }
+
+        .navbar a:hover {
+            color: white;
+            transform: translateX(10px);
+            border-color: transparent;
+            box-shadow: 0 8px 25px var(--shadow-medium);
+        }
+
+        .navbar a.active {
+            background: var(--secondary-gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px var(--shadow-medium);
+        }
+
+        /* Content Area */
+        .content-area {
+            width: 100%;
+            padding: 40px;
+        }
+
+        /* Search Navigation Bar */
+        .search-nav {
+            background: var(--bg-primary);
+            margin: 0 auto 30px auto;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px var(--shadow-medium);
+            max-width: 1200px;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        .search-nav::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--primary-gradient);
+            border-radius: 27px;
+            z-index: -1;
+        }
+
+        .search-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-title {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 50px 18px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 500;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: transparent;
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3), 0 8px 25px var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px var(--shadow-medium);
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: transparent;
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+        }
+
+        .trending-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        .trending-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .trending-tag {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .trending-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow-medium);
+        }
+
+        .trending-tag.active {
+            background: var(--success-gradient);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow-medium);
+        }
+
+        .search-results {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            border: 2px solid var(--border-color);
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .results-header {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .result-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item:hover {
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            padding-left: 10px;
+            border-radius: 8px;
+        }
+
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .result-description {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* AI Suggestions Section */
+        .ai-suggestions {
+            background: var(--bg-primary);
+            margin: 0 auto;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px var(--shadow-medium);
+            max-width: 1200px;
+            border: 4px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        .ai-suggestions::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--secondary-gradient);
+            border-radius: 32px;
+            z-index: -1;
+        }
+
+        .ai-suggestions h2 {
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: clamp(28px, 6vw, 42px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ai-suggestions > p {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        .suggestions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .suggestion-card {
+            background: var(--bg-primary);
+            border: 3px solid var(--border-color);
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px var(--shadow-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .suggestion-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--accent-gradient);
+        }
+
+        .suggestion-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px var(--shadow-medium);
+            border-color: transparent;
+        }
+
+        .suggestion-card h3 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .suggestion-card p {
+            margin-bottom: 25px;
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .suggestion-btn {
+            background: var(--secondary-gradient);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .suggestion-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-medium);
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .content-area {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .suggestions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-controls {
+                top: 10px;
+                right: 10px;
+                flex-direction: column;
+                border-radius: 20px;
+            }
+            
+            .theme-toggle, .logout-btn {
+                border-radius: 0;
+                border-right: none;
+                border-bottom: 2px solid var(--border-color);
+                padding: 12px 20px;
+            }
+            
+            .logout-btn {
+                border-bottom: none;
+            }
+            
+            .login-form {
+                padding: 30px 20px;
+                margin: 10px;
+                max-width: 90%;
+            }
+            
+            .login-container {
+                padding: 10px;
+                padding-top: 30px;
+            }
+            
+            .back-to-landing {
+                top: 10px;
+                left: 10px;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            /* Search Navigation Mobile Styles */
+            .search-nav {
+                padding: 20px;
+                margin: 0 auto 20px auto;
+            }
+            
+            .search-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-input-wrapper {
+                min-width: 100%;
+            }
+            
+            .filter-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .filter-select {
+                flex: 1;
+                min-width: auto;
+            }
+            
+            .trending-tags {
+                justify-content: center;
+            }
+            
+            .trending-tag {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Controls -->
+    <div class="top-controls">
+        <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+        <a href="#" class="logout-btn" onclick="logout(); return false;" id="logoutBtn" style="display: none;">Logout</a>
+    </div>
+
+    <!-- Landing Page - Full Screen Welcome -->
+    <div id="landingPage" class="landing-page">
+        <div class="landing-content">
+            <h1 class="landing-title">Welcome to AI Social Media Hub</h1>
+            <p class="landing-subtitle">Your Personalized Social Experience Powered by Artificial Intelligence</p>
+            <button class="landing-login-btn" onclick="showLoginPage()">Get Started - Login</button>
+        </div>
+    </div>
+
+    <!-- Welcome Popup -->
+    <div id="welcomePopup" class="welcome-popup">
+        <div class="popup-content">
+            <div class="popup-title">🎉 Welcome!</div>
+            <div class="popup-message" id="popupMessage">
+                Welcome to AI Social Media Hub! Get ready to experience the future of social networking with AI-powered suggestions and personalized content.
+            </div>
+            <button class="popup-close" onclick="closeWelcomePopup()">Let's Get Started!</button>
+        </div>
+    </div>
+
+    <!-- Welcome Header -->
+    <div class="welcome-header">
+        <h1>🤖 AI Social Hub</h1>
+        <p>Your Personalized Social Experience Powered by Artificial Intelligence</p>
+    </div>
+
+    <!-- Navigation Bar - Always Visible -->
+    <div class="navbar">
+        <a href="profile.html" id="profileNav">👤 Profile</a>
+        <a href="posts.html" id="postsNav">📝 Posts</a>
+        <a href="videos.html" id="videosNav">🎥 Videos</a>
+        <a href="reels.html" id="reelsNav">🎬 Reels</a>
+        <a href="news.html" id="newsNav">📰 News of the Day</a>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <button class="back-to-landing" onclick="backToLanding()">← Back</button>
+        <div class="login-form">
+            <h2>Join Our Community</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" min="13" max="120" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer-not-to-say">Prefer not to say</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email ID</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Login</button>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <button type="button" class="google-btn" onclick="loginWithGoogle()">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="content-area">
+                <div class="ai-suggestions">
+                    <h2>🤖 AI-Powered Social Media Suggestions</h2>
+                    <p style="text-align: center; color: #666; font-size: 18px;">
+                        Personalized recommendations based on your interests and activity
+                    </p>
+                    
+                    <div class="suggestions-grid">
+                        <div class="suggestion-card">
+                            <h3>🎨 Creative Content</h3>
+                            <p>Based on your interests in technology and art, we suggest creating content about AI-generated artwork and digital creativity.</p>
+                            <button class="suggestion-btn">Explore Ideas</button>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h3>🎯 Trending Topics</h3>
+                            <p>Join conversations about machine learning, space exploration, and sustainable technology - topics gaining traction in your network.</p>
+                            <button class="suggestion-btn">View Trends</button>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h3>👥 Connect & Collaborate</h3>
+                            <p>We found 15 creators in your field. Connect with like-minded individuals and start meaningful collaborations.</p>
+                            <button class="suggestion-btn">Find Connections</button>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h3>📊 Optimize Your Posts</h3>
+                            <p>Post at 7 PM for maximum engagement. Your audience is most active during evening hours on weekdays.</p>
+                            <button class="suggestion-btn">Schedule Posts</button>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h3>🎵 Music & Audio</h3>
+                            <p>Trending audio clips in your genre: Lo-fi beats, Tech podcasts, and AI-generated music are performing well.</p>
+                            <button class="suggestion-btn">Browse Audio</button>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h3>📈 Growth Insights</h3>
+                            <p>Your tech-focused content gets 3x more engagement. Consider creating more educational content about AI and programming.</p>
+                            <button class="suggestion-btn">View Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Basic validation
+            if (name && age && gender && email && password) {
+                // Store user data (in real app, this would be sent to server)
+                localStorage.setItem('userData', JSON.stringify({
+                    name: name,
+                    age: age,
+                    gender: gender,
+                    email: email
+                }));
+                
+                // Show dashboard
+                showDashboard();
+            } else {
+                alert('Please fill in all fields');
+            }
+        });
+        
+        function loginWithGoogle() {
+            // In a real application, this would integrate with Google OAuth
+            // For demo purposes, simulate successful login
+            localStorage.setItem('userData', JSON.stringify({
+                name: 'Google User',
+                age: 25,
+                gender: 'prefer-not-to-say',
+                email: 'user@gmail.com'
+            }));
+            showDashboard();
+        }
+        
+        function showDashboard() {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            // Show navbar only (no header)
+            const navbar = document.querySelector('.navbar');
+            navbar.style.display = 'flex';
+            navbar.style.flexDirection = 'column';
+            navbar.style.justifyContent = 'flex-start';
+            navbar.style.alignItems = 'stretch';
+            
+            // Show logout button
+            document.getElementById('logoutBtn').style.display = 'flex';
+            
+            // Store user data for other pages
+            storeUserData();
+            
+            // Show welcome popup
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                showWelcomePopup(userData.name);
+            }
+        }
+
+        // Welcome Popup Functions
+        function showWelcomePopup(userName) {
+            const popup = document.getElementById('welcomePopup');
+            const message = document.getElementById('popupMessage');
+            
+            message.innerHTML = `
+                🎉 <strong>Welcome ${userName}!</strong><br><br>
+                You've successfully joined our AI-powered social media community! 
+                Explore personalized content, connect with like-minded people, and discover 
+                trending topics tailored just for you. Let's start your amazing journey!
+            `;
+            
+            popup.style.display = 'flex';
+            
+            // Auto close after 5 seconds
+            setTimeout(() => {
+                closeWelcomePopup();
+            }, 5000);
+        }
+
+        function closeWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            popup.style.display = 'none';
+        }
+        
+        function logout() {
+            localStorage.removeItem('userData');
+            sessionStorage.removeItem('currentUser');
+            
+            // Hide logout button, navbar, and header
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.querySelector('.navbar').style.display = 'none';
+            document.querySelector('.welcome-header').style.display = 'none';
+            
+            // Go back to landing page
+            document.getElementById('landingPage').style.display = 'flex';
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            
+            // Reset form
+            document.getElementById('loginForm').reset();
+        }
+        
+        // Store user data globally for other pages
+        function storeUserData() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                // Make user data available to other pages
+                sessionStorage.setItem('currentUser', JSON.stringify(userData));
+            }
+        }
+        
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️ Light Mode';
+            } else {
+                themeToggle.textContent = '🌙 Dark Mode';
+            }
+        }
+
+        // Show Login Page from Landing Page
+        function showLoginPage() {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+        }
+
+        // Back to Landing Page
+        function backToLanding() {
+            document.getElementById('landingPage').style.display = 'flex';
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+
+        // Check if user is already logged in
+        window.addEventListener('load', function() {
+            loadTheme(); // Load theme first
+            
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                // Skip landing page and go directly to dashboard
+                document.getElementById('landingPage').style.display = 'none';
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'flex';
+                showDashboard();
+            } else {
+                // Show clean landing page first
+                document.getElementById('landingPage').style.display = 'flex';
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.querySelector('.navbar').style.display = 'none';
+                document.querySelector('.welcome-header').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

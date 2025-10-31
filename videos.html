@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos - AI Social Media Hub</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            width: 280px;
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            padding: 20px 0;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .navbar h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar a {
+            display: block;
+            width: 90%;
+            margin: 10px 5%;
+            background: linear-gradient(to right, #ff4081, #7c4dff);
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .navbar a:hover {
+            transform: scale(1.05) rotateY(5deg);
+        }
+
+        .navbar a.active {
+            background: linear-gradient(to right, #7c4dff, #ff4081);
+            transform: scale(1.1);
+        }
+
+        .content-area {
+            margin-left: 280px;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            color: #7c4dff;
+            font-size: 36px;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .play-button {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .video-channel {
+            color: #7c4dff;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .video-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .video-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #ff4081, #7c4dff);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="logout-btn">← Back to Dashboard</a>
+    
+    <div class="navbar">
+        <h3>🤖 AI Social Hub</h3>
+        <a href="profile.html">👤 Profile</a>
+        <a href="posts.html">📝 Posts</a>
+        <a href="videos.html" class="active">🎥 Videos</a>
+        <a href="reels.html">🎬 Reels</a>
+        <a href="news.html">📰 News of the Day</a>
+    </div>
+
+    <div class="content-area">
+        <div class="page-header">
+            <h1>🎥 Popular Videos</h1>
+            <p>Watch the most engaging video content from our creators</p>
+        </div>
+
+        <div class="videos-grid">
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    🧠
+                    <div class="play-button">▶️</div>
+                    <div class="video-duration">15:42</div>
+                </div>
+                <div class="video-info">
+                    <div class="video-channel">Tech Insights</div>
+                    <div class="video-title">Tech Talk: Future of Neural Networks</div>
+                    <div class="video-description">
+                        Explore the cutting-edge developments in neural network architecture and how they're reshaping artificial intelligence. From transformers to graph neural networks.
+                    </div>
+                    <div class="video-stats">
+                        <span>👁️ 245K views</span>
+                        <span>👍 12K likes</span>
+                        <span>📅 3 days ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    🏠
+                    <div class="play-button">▶️</div>
+                    <div class="video-duration">22:15</div>
+                </div>
+                <div class="video-info">
+                    <div class="video-channel">Smart Home Pro</div>
+                    <div class="video-title">DIY Smart Home Setup - Complete Guide</div>
+                    <div class="video-description">
+                        Transform your home into a smart home with this comprehensive guide. We cover everything from smart lights to voice assistants and security systems.
+                    </div>
+                    <div class="video-stats">
+                        <span>👁️ 189K views</span>
+                        <span>👍 8.5K likes</span>
+                        <span>📅 1 week ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    🚀
+                    <div class="play-button">▶️</div>
+                    <div class="video-duration">28:33</div>
+                </div>
+                <div class="video-info">
+                    <div class="video-channel">Space Explorer</div>
+                    <div class="video-title">Behind the Scenes: SpaceX Launch</div>
+                    <div class="video-description">
+                        Get exclusive behind-the-scenes access to a SpaceX rocket launch. See the preparation, the technology, and the incredible moment of liftoff.
+                    </div>
+                    <div class="video-stats">
+                        <span>👁️ 567K views</span>
+                        <span>👍 45K likes</span>
+                        <span>📅 2 days ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    🎨
+                    <div class="play-button">▶️</div>
+                    <div class="video-duration">18:27</div>
+                </div>
+                <div class="video-info">
+                    <div class="video-channel">AI Artist</div>
+                    <div class="video-title">AI Art Generation: Creative Possibilities</div>
+                    <div class="video-description">
+                        Discover how AI is revolutionizing digital art creation. Learn about DALL-E, Midjourney, and other AI tools that are changing the creative landscape.
+                    </div>
+                    <div class="video-stats">
+                        <span>👁️ 123K views</span>
+                        <span>👍 9.2K likes</span>
+                        <span>📅 5 days ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    ⚛️
+                    <div class="play-button">▶️</div>
+                    <div class="video-duration">35:12</div>
+                </div>
+                <div class="video-info">
+                    <div class="video-channel">Quantum Physics</div>
+                    <div class="video-title">Quantum Computing Explained Simply</div>
+                    <div class="video-description">
+                        Quantum computing made easy! Understand qubits, superposition, and entanglement without needing a PhD in physics. The future of computing explained.
+                    </div>
+                    <div class="video-stats">
+                        <span>👁️ 89K views</span>
+                        <span>👍 6.7K likes</span>
+                        <span>📅 1 week ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    💻
+                    <div class="play-button">▶️</div>
+                    <div class="video-duration">12:45</div>
+                </div>
+                <div class="video-info">
+                    <div class="video-channel">Code Academy</div>
+                    <div class="video-title">Machine Learning in 10 Minutes</div>
+                    <div class="video-description">
+                        A quick introduction to machine learning concepts. Perfect for beginners who want to understand AI and ML without getting overwhelmed.
+                    </div>
+                    <div class="video-stats">
+                        <span>👁️ 345K views</span>
+                        <span>👍 23K likes</span>
+                        <span>📅 4 days ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add click functionality to play buttons
+        document.querySelectorAll('.video-thumbnail').forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                const title = this.parentElement.querySelector('.video-title').textContent;
+                alert(`Playing: ${title}\n\nThis would open the video player in a real application.`);
+            });
+        });
+    </script>
+</body>
+</html>

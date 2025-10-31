@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News of the Day - AI Social Media Hub</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            width: 280px;
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            padding: 20px 0;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .navbar h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar a {
+            display: block;
+            width: 90%;
+            margin: 10px 5%;
+            background: linear-gradient(to right, #ff4081, #7c4dff);
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .navbar a:hover {
+            transform: scale(1.05) rotateY(5deg);
+        }
+
+        .navbar a.active {
+            background: linear-gradient(to right, #7c4dff, #ff4081);
+            transform: scale(1.1);
+        }
+
+        .content-area {
+            margin-left: 280px;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            color: #7c4dff;
+            font-size: 36px;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .breaking-news {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .breaking-badge {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .breaking-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+        }
+
+        .breaking-summary {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .news-article {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .news-article:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-header {
+            padding: 25px 25px 0 25px;
+        }
+
+        .news-category {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .news-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0 0 15px 0;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .news-content {
+            padding: 0 25px 25px 25px;
+        }
+
+        .news-summary {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            margin: 15px 0;
+            border-radius: 10px;
+        }
+
+        .read-more {
+            background: linear-gradient(to right, #ff4081, #7c4dff);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .read-more:hover {
+            transform: scale(1.05);
+        }
+
+        .trending-topics {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .trending-title {
+            color: #7c4dff;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 0 20px 0;
+        }
+
+        .trending-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .trending-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .trending-tag:hover {
+            transform: scale(1.1);
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #ff4081, #7c4dff);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="logout-btn">← Back to Dashboard</a>
+    
+    <div class="navbar">
+        <h3>🤖 AI Social Hub</h3>
+        <a href="profile.html">👤 Profile</a>
+        <a href="posts.html">📝 Posts</a>
+        <a href="videos.html">🎥 Videos</a>
+        <a href="reels.html">🎬 Reels</a>
+        <a href="news.html" class="active">📰 News of the Day</a>
+    </div>
+
+    <div class="content-area">
+        <div class="page-header">
+            <h1>📰 News of the Day</h1>
+            <p id="currentDate">Stay updated with the latest developments</p>
+        </div>
+
+        <div class="news-container">
+            <div class="breaking-news">
+                <div class="breaking-badge">🔴 BREAKING NEWS</div>
+                <div class="breaking-title">AI Breakthrough: New Model Learns with Zero Data</div>
+                <div class="breaking-summary">
+                    Scientists at MIT have developed a revolutionary AI system that can learn complex tasks without any training data, potentially transforming how we approach machine learning and artificial intelligence development.
+                </div>
+            </div>
+
+            <div class="trending-topics">
+                <div class="trending-title">🔥 Trending Topics</div>
+                <div class="trending-tags">
+                    <div class="trending-tag">#AIBreakthrough</div>
+                    <div class="trending-tag">#SpaceExploration</div>
+                    <div class="trending-tag">#ClimateAction</div>
+                    <div class="trending-tag">#TechInnovation</div>
+                    <div class="trending-tag">#QuantumComputing</div>
+                    <div class="trending-tag">#GreenEnergy</div>
+                </div>
+            </div>
+
+            <div class="news-grid">
+                <div class="news-article">
+                    <div class="news-header">
+                        <div class="news-category">TECHNOLOGY</div>
+                        <div class="news-title">AI Breakthrough: New Model Learns with Zero Data</div>
+                        <div class="news-meta">
+                            <span>🕒 2 hours ago</span>
+                            <span>👤 Dr. Sarah Chen</span>
+                            <span>📍 MIT Research Lab</span>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-summary">
+                            Researchers have developed an AI system that can understand and perform complex tasks without traditional training data. This breakthrough could revolutionize machine learning, making AI more accessible and reducing the need for massive datasets. The implications for industries from healthcare to autonomous vehicles are enormous.
+                        </div>
+                        <div class="news-image">🧠 AI Neural Network</div>
+                        <button class="read-more">Read Full Article</button>
+                    </div>
+                </div>
+
+                <div class="news-article">
+                    <div class="news-header">
+                        <div class="news-category">ENVIRONMENT</div>
+                        <div class="news-title">Global Climate Summit 2025 Highlights</div>
+                        <div class="news-meta">
+                            <span>🕒 6 hours ago</span>
+                            <span>👤 Climate News Network</span>
+                            <span>📍 Geneva, Switzerland</span>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-summary">
+                            World leaders gather to discuss unprecedented climate action plans. New commitments include a global carbon tax, massive renewable energy investments, and breakthrough technologies for carbon capture. The summit aims to limit global warming to 1.5°C through coordinated international efforts.
+                        </div>
+                        <div class="news-image">🌍 Climate Summit</div>
+                        <button class="read-more">Read Full Article</button>
+                    </div>
+                </div>
+
+                <div class="news-article">
+                    <div class="news-header">
+                        <div class="news-category">SPACE</div>
+                        <div class="news-title">India's Mars Mission: Next Launch Date Announced</div>
+                        <div class="news-meta">
+                            <span>🕒 1 day ago</span>
+                            <span>👤 ISRO Communications</span>
+                            <span>📍 Bangalore, India</span>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-summary">
+                            ISRO announces the launch date for Mangalyaan-3, India's most ambitious Mars mission yet. The spacecraft will carry advanced instruments to search for signs of past life and study the Martian atmosphere. This mission represents a significant leap in India's space exploration capabilities.
+                        </div>
+                        <div class="news-image">🚀 Mars Mission</div>
+                        <button class="read-more">Read Full Article</button>
+                    </div>
+                </div>
+
+                <div class="news-article">
+                    <div class="news-header">
+                        <div class="news-category">INNOVATION</div>
+                        <div class="news-title">Revolutionary Battery Technology Unveiled</div>
+                        <div class="news-meta">
+                            <span>🕒 1 day ago</span>
+                            <span>👤 Tech Innovation Weekly</span>
+                            <span>📍 Silicon Valley, USA</span>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-summary">
+                            A new solid-state battery technology promises to charge electric vehicles in under 5 minutes while lasting 1 million miles. This breakthrough could accelerate the transition to electric transportation and revolutionize energy storage for renewable power grids worldwide.
+                        </div>
+                        <div class="news-image">🔋 Battery Tech</div>
+                        <button class="read-more">Read Full Article</button>
+                    </div>
+                </div>
+
+                <div class="news-article">
+                    <div class="news-header">
+                        <div class="news-category">EDUCATION</div>
+                        <div class="news-title">Virtual Reality in Education: New Standards</div>
+                        <div class="news-meta">
+                            <span>🕒 2 days ago</span>
+                            <span>👤 Education Technology Board</span>
+                            <span>📍 Global Initiative</span>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-summary">
+                            Educational institutions worldwide adopt new VR standards for immersive learning. Students can now explore ancient Rome, conduct virtual chemistry experiments, and collaborate in 3D spaces. This technology is making education more engaging and accessible than ever before.
+                        </div>
+                        <div class="news-image">🥽 VR Education</div>
+                        <button class="read-more">Read Full Article</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set current date
+        document.getElementById('currentDate').textContent = 
+            `Today's News - ${new Date().toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            })}`;
+
+        // Add click functionality to read more buttons
+        document.querySelectorAll('.read-more').forEach(button => {
+            button.addEventListener('click', function() {
+                const title = this.closest('.news-article').querySelector('.news-title').textContent;
+                alert(`Opening full article: "${title}"\n\nThis would open the complete news article in a real application.`);
+            });
+        });
+
+        // Add click functionality to trending tags
+        document.querySelectorAll('.trending-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const topic = this.textContent;
+                alert(`Searching for more news about: ${topic}\n\nThis would show related articles in a real application.`);
+            });
+        });
+    </script>
+</body>
+</html>

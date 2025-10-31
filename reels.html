@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels - AI Social Media Hub</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            width: 280px;
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            padding: 20px 0;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .navbar h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar a {
+            display: block;
+            width: 90%;
+            margin: 10px 5%;
+            background: linear-gradient(to right, #ff4081, #7c4dff);
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .navbar a:hover {
+            transform: scale(1.05) rotateY(5deg);
+        }
+
+        .navbar a.active {
+            background: linear-gradient(to right, #7c4dff, #ff4081);
+            transform: scale(1.1);
+        }
+
+        .content-area {
+            margin-left: 280px;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            color: #7c4dff;
+            font-size: 36px;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .reels-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .reel-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .reel-card:hover {
+            transform: translateY(-10px) rotateY(5deg);
+        }
+
+        .reel-video {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .reel-video.dance {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+        }
+
+        .reel-video.vlog {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+        }
+
+        .reel-video.pets {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+        }
+
+        .reel-video.tech {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .reel-video.coding {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .reel-card:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7c4dff;
+            font-size: 32px;
+        }
+
+        .reel-duration {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .reel-info {
+            padding: 20px;
+        }
+
+        .reel-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 0 8px 0;
+            color: #333;
+        }
+
+        .reel-creator {
+            color: #7c4dff;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .reel-description {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .reel-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reel-engagement {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .trending-badge {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #ff4081, #7c4dff);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="logout-btn">← Back to Dashboard</a>
+    
+    <div class="navbar">
+        <h3>🤖 AI Social Hub</h3>
+        <a href="profile.html">👤 Profile</a>
+        <a href="posts.html">📝 Posts</a>
+        <a href="videos.html">🎥 Videos</a>
+        <a href="reels.html" class="active">🎬 Reels</a>
+        <a href="news.html">📰 News of the Day</a>
+    </div>
+
+    <div class="content-area">
+        <div class="page-header">
+            <h1>🎬 Hot Reels</h1>
+            <p>Short-form content that's trending right now</p>
+        </div>
+
+        <div class="reels-container">
+            <div class="reel-card">
+                <div class="reel-video dance">
+                    💃
+                    <div style="font-size: 24px; margin-top: 10px;">VS</div>
+                    🤖
+                    <div class="play-overlay">
+                        <div class="play-button">▶️</div>
+                    </div>
+                    <div class="reel-duration">0:45</div>
+                </div>
+                <div class="reel-info">
+                    <div class="reel-creator">@DanceChallenger</div>
+                    <div class="reel-title">Dance Challenge: AI vs Human</div>
+                    <div class="reel-description">
+                        Who dances better? Watch this epic dance battle between a human dancer and an AI-powered robot! The results will surprise you! 🕺💃
+                    </div>
+                    <div class="reel-stats">
+                        <div class="reel-engagement">
+                            <span>❤️ 45K</span>
+                            <span>💬 1.2K</span>
+                            <span>🔄 8.9K</span>
+                        </div>
+                        <div class="trending-badge">TRENDING</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reel-card">
+                <div class="reel-video vlog">
+                    🏙️
+                    <div style="font-size: 20px; margin-top: 10px;">Tokyo Streets</div>
+                    <div class="play-overlay">
+                        <div class="play-button">▶️</div>
+                    </div>
+                    <div class="reel-duration">1:15</div>
+                </div>
+                <div class="reel-info">
+                    <div class="reel-creator">@TokyoVlogger</div>
+                    <div class="reel-title">Mini Vlogs from Tokyo Streets</div>
+                    <div class="reel-description">
+                        Experience the vibrant energy of Tokyo through these quick street vlogs. From bustling crossings to hidden cafes! 🇯🇵✨
+                    </div>
+                    <div class="reel-stats">
+                        <div class="reel-engagement">
+                            <span>❤️ 23K</span>
+                            <span>💬 567</span>
+                            <span>🔄 3.4K</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reel-card">
+                <div class="reel-video pets">
+                    🐶
+                    <div style="font-size: 20px; margin-top: 10px;">🐱 🐹</div>
+                    <div class="play-overlay">
+                        <div class="play-button">▶️</div>
+                    </div>
+                    <div class="reel-duration">0:38</div>
+                </div>
+                <div class="reel-info">
+                    <div class="reel-creator">@FunnyPets</div>
+                    <div class="reel-title">Funny Pets Compilation</div>
+                    <div class="reel-description">
+                        The cutest and funniest pet moments that will make your day! Dogs, cats, and more being absolutely adorable 🥰
+                    </div>
+                    <div class="reel-stats">
+                        <div class="reel-engagement">
+                            <span>❤️ 67K</span>
+                            <span>💬 2.1K</span>
+                            <span>🔄 12K</span>
+                        </div>
+                        <div class="trending-badge">VIRAL</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reel-card">
+                <div class="reel-video tech">
+                    💡
+                    <div style="font-size: 18px; margin-top: 10px;">60 SEC TIPS</div>
+                    <div class="play-overlay">
+                        <div class="play-button">▶️</div>
+                    </div>
+                    <div class="reel-duration">1:00</div>
+                </div>
+                <div class="reel-info">
+                    <div class="reel-creator">@TechTips60</div>
+                    <div class="reel-title">Tech Tips in 60 Seconds</div>
+                    <div class="reel-description">
+                        Quick tech hacks that will change how you use your devices! Today: Hidden smartphone features you never knew existed 📱
+                    </div>
+                    <div class="reel-stats">
+                        <div class="reel-engagement">
+                            <span>❤️ 34K</span>
+                            <span>💬 890</span>
+                            <span>🔄 5.6K</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reel-card">
+                <div class="reel-video coding">
+                    💻
+                    <div style="font-size: 18px; margin-top: 10px;">CODE CHALLENGE</div>
+                    <div class="play-overlay">
+                        <div class="play-button">▶️</div>
+                    </div>
+                    <div class="reel-duration">0:52</div>
+                </div>
+                <div class="reel-info">
+                    <div class="reel-creator">@CodeMaster</div>
+                    <div class="reel-title">Coding Challenges: Quick Solutions</div>
+                    <div class="reel-description">
+                        Solve this coding problem in under 60 seconds! Watch me code a solution to a popular interview question step by step 🚀
+                    </div>
+                    <div class="reel-stats">
+                        <div class="reel-engagement">
+                            <span>❤️ 19K</span>
+                            <span>💬 445</span>
+                            <span>🔄 2.8K</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reel-card">
+                <div class="reel-video dance">
+                    🎵
+                    <div style="font-size: 18px; margin-top: 10px;">MUSIC TREND</div>
+                    <div class="play-overlay">
+                        <div class="play-button">▶️</div>
+                    </div>
+                    <div class="reel-duration">0:30</div>
+                </div>
+                <div class="reel-info">
+                    <div class="reel-creator">@MusicTrends</div>
+                    <div class="reel-title">This Week's Viral Sound</div>
+                    <div class="reel-description">
+                        Everyone's using this sound! Join the trend and create your own version. Perfect for dance videos and transitions 🎶
+                    </div>
+                    <div class="reel-stats">
+                        <div class="reel-engagement">
+                            <span>❤️ 89K</span>
+                            <span>💬 3.2K</span>
+                            <span>🔄 15K</span>
+                        </div>
+                        <div class="trending-badge">HOT</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add click functionality to reels
+        document.querySelectorAll('.reel-video').forEach(reel => {
+            reel.addEventListener('click', function() {
+                const title = this.parentElement.querySelector('.reel-title').textContent;
+                alert(`Playing Reel: ${title}\n\nThis would open the reel player in a real application.`);
+            });
+        });
+    </script>
+</body>
+</html>

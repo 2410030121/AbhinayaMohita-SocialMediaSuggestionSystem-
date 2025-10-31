@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - AI Social Media Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            /* Light Mode Colors */
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            --accent-gradient: linear-gradient(135deg, #ff9a9e, #fecfef);
+            --success-gradient: linear-gradient(135deg, #a8edea, #fed6e3);
+            --warning-gradient: linear-gradient(135deg, #ffecd2, #fcb69f);
+            --danger-gradient: linear-gradient(135deg, #ff758c, #ff7eb3);
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --shadow-heavy: rgba(0, 0, 0, 0.25);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode Colors */
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            --accent-gradient: linear-gradient(135deg, #ff9a9e, #fecfef);
+            --success-gradient: linear-gradient(135deg, #a8edea, #fed6e3);
+            --warning-gradient: linear-gradient(135deg, #ffecd2, #fcb69f);
+            --danger-gradient: linear-gradient(135deg, #ff758c, #ff7eb3);
+            
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-tertiary: #4a5568;
+            --text-primary: #f7fafc;
+            --text-secondary: #e2e8f0;
+            --text-muted: #a0aec0;
+            --border-color: #4a5568;
+            --shadow-light: rgba(0, 0, 0, 0.3);
+            --shadow-medium: rgba(0, 0, 0, 0.4);
+            --shadow-heavy: rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-gradient);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 180px;
+            z-index: 1000;
+            background: var(--bg-primary);
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            border-radius: 50px;
+            padding: 12px 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 32px var(--shadow-medium);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px var(--shadow-heavy);
+        }
+
+        .navbar {
+            width: 320px;
+            background: var(--bg-primary);
+            padding: 30px 0;
+            box-shadow: 8px 0 30px var(--shadow-medium);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 4px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -4px;
+            width: 4px;
+            height: 100%;
+            background: var(--secondary-gradient);
+        }
+
+        .navbar h3 {
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navbar a {
+            display: block;
+            width: 85%;
+            margin: 15px 7.5%;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 20px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 20px;
+            border: 3px solid var(--border-color);
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .navbar a:hover::before {
+            left: 0;
+        }
+
+        .navbar a:hover {
+            color: white;
+            transform: translateX(10px);
+            border-color: transparent;
+            box-shadow: 0 8px 25px var(--shadow-medium);
+        }
+
+        .navbar a.active {
+            background: var(--secondary-gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px var(--shadow-medium);
+        }
+
+        .content-area {
+            margin-left: 320px;
+            padding: 40px;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-primary);
+            border-radius: 30px;
+            box-shadow: 0 25px 80px var(--shadow-heavy);
+            overflow: hidden;
+            border: 4px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        .profile-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--secondary-gradient);
+            border-radius: 32px;
+            z-index: -1;
+        }
+
+        .profile-header {
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            border: 6px solid white;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-name {
+            font-size: clamp(28px, 6vw, 42px);
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-details {
+            padding: 50px;
+        }
+
+        .detail-card {
+            background: var(--bg-secondary);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 20px;
+            border: 3px solid var(--border-color);
+            box-shadow: 0 8px 25px var(--shadow-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--accent-gradient);
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--shadow-medium);
+            border-color: transparent;
+        }
+
+        .detail-label {
+            font-weight: 700;
+            font-size: 16px;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            border: 3px solid var(--border-color);
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 15px 40px var(--shadow-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--success-gradient);
+        }
+
+        .stat-card:nth-child(2)::before {
+            background: var(--warning-gradient);
+        }
+
+        .stat-card:nth-child(3)::before {
+            background: var(--accent-gradient);
+        }
+
+        .stat-card:nth-child(4)::before {
+            background: var(--danger-gradient);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px var(--shadow-medium);
+            border-color: transparent;
+        }
+
+        .stat-number {
+            font-size: clamp(28px, 6vw, 42px);
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--danger-gradient);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 8px 25px var(--shadow-medium);
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px var(--shadow-heavy);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .content-area {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .profile-details {
+                padding: 30px 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .theme-toggle {
+                right: 20px;
+                top: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+    
+    <a href="index.html" class="logout-btn">← Back to Dashboard</a>
+    
+    <div class="navbar">
+        <h3>🤖 AI Social Hub</h3>
+        <a href="profile.html" class="active">👤 Profile</a>
+        <a href="posts.html">📝 Posts</a>
+        <a href="videos.html">🎥 Videos</a>
+        <a href="reels.html">🎬 Reels</a>
+        <a href="news.html">📰 News of the Day</a>
+    </div>
+
+    <div class="content-area">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar">👤</div>
+                <h1 class="profile-name" id="profileName">Loading...</h1>
+            </div>
+            
+            <div class="profile-details">
+                <div class="detail-card">
+                    <div class="detail-label">Full Name</div>
+                    <div class="detail-value" id="userName">Loading...</div>
+                </div>
+                
+                <div class="detail-card">
+                    <div class="detail-label">Age</div>
+                    <div class="detail-value" id="userAge">Loading...</div>
+                </div>
+                
+                <div class="detail-card">
+                    <div class="detail-label">Gender</div>
+                    <div class="detail-value" id="userGender">Loading...</div>
+                </div>
+                
+                <div class="detail-card">
+                    <div class="detail-label">Email Address</div>
+                    <div class="detail-value" id="userEmail">Loading...</div>
+                </div>
+                
+                <div class="detail-card">
+                    <div class="detail-label">Member Since</div>
+                    <div class="detail-value" id="memberSince">October 2024</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">247</div>
+                        <div class="stat-label">Posts Created</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">1.2K</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">856</div>
+                        <div class="stat-label">Following</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">15.3K</div>
+                        <div class="stat-label">Total Likes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️ Light Mode';
+            } else {
+                themeToggle.textContent = '🌙 Dark Mode';
+            }
+        }
+
+        // Load user data from localStorage
+        window.addEventListener('load', function() {
+            loadTheme(); // Load theme first
+            
+            const userData = JSON.parse(localStorage.getItem('userData')) || 
+                           JSON.parse(sessionStorage.getItem('currentUser'));
+            
+            if (userData) {
+                document.getElementById('profileName').textContent = userData.name;
+                document.getElementById('userName').textContent = userData.name;
+                document.getElementById('userAge').textContent = userData.age + ' years old';
+                document.getElementById('userGender').textContent = userData.gender.charAt(0).toUpperCase() + userData.gender.slice(1).replace('-', ' ');
+                document.getElementById('userEmail').textContent = userData.email;
+                
+                // Set avatar based on gender
+                const avatar = document.getElementById('profileAvatar');
+                if (userData.gender === 'male') {
+                    avatar.textContent = '👨';
+                } else if (userData.gender === 'female') {
+                    avatar.textContent = '👩';
+                } else {
+                    avatar.textContent = '👤';
+                }
+            } else {
+                // Redirect to login if no user data
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
