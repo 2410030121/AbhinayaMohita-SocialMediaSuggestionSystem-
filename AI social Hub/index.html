@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Social Media HUB</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #8A2BE2;
+            --secondary: #FF6B6B;
+            --accent: #00D2FF;
+            --dark: #1A1A2E;
+            --light: #F8F9FA;
+            --success: #4ECDC4;
+            --warning: #FFD166;
+            --danger: #FF6B6B;
+            --card-bg: rgba(255, 255, 255, 0.15);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --nav-bg: rgba(26, 26, 46, 0.9);
+            --header-bg: rgba(138, 43, 226, 0.85);
+        }
+
+        body {
+            background: white;
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Landing Page Styles */
+        .landing-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #FF6B6B, #4ECDC4, #45B7D1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .login-btn {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.6);
+        }
+
+        /* Login Page Styles */
+        .login-page {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 90%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 35px;
+            color: var(--primary);
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            background: white;
+            color: #333;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        /* Welcome Popup Page */
+        .welcome-page {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .welcome-container {
+            width: 90%;
+            max-width: 550px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-container h2 {
+            margin-bottom: 25px;
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .welcome-container p {
+            margin-bottom: 35px;
+            color: #666;
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+
+        .popup-btn {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .popup-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+            color: var(--light);
+        }
+
+        .dashboard-header {
+            background: var(--header-bg);
+            padding: 20px 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #FF6B6B, #4ECDC4, #45B7D1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        /* Search Bar Styles */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 10px 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .search-container:focus-within {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .search-input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            font-size: 1.1rem;
+            width: 280px;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.1);
+            color: var(--accent);
+        }
+
+        .dashboard-content {
+            display: flex;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Navigation Styles */
+        .nav-bar {
+            width: 280px;
+            background: var(--nav-bg);
+            padding: 25px 0;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 90%;
+            margin: 12px auto;
+            padding: 16px 20px;
+            background: linear-gradient(145deg, rgba(138, 43, 226, 0.8), rgba(0, 210, 255, 0.7));
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transform: perspective(500px) rotateX(0deg);
+            text-align: left;
+        }
+
+        .nav-btn:hover {
+            transform: perspective(500px) rotateX(10deg) translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(145deg, rgba(255, 107, 107, 0.9), rgba(138, 43, 226, 0.8));
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(145deg, rgba(255, 107, 107, 0.9), rgba(78, 205, 196, 0.8));
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .nav-btn i {
+            font-size: 1.3rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Page Content Styles */
+        .page-content {
+            flex: 1;
+            padding: 35px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 2.3rem;
+            margin-bottom: 35px;
+            color: var(--light);
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 15px;
+            display: inline-block;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Card Styles */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-user {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .card-time {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .card-content {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 220px;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.3rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(138, 43, 226, 0.3), rgba(255, 107, 107, 0.3));
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 10px;
+        }
+
+        .action-btn:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Content Type Badge */
+        .content-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .badge-post {
+            background: linear-gradient(45deg, var(--primary), #9D4EDD);
+            color: white;
+        }
+
+        .badge-reel {
+            background: linear-gradient(45deg, var(--secondary), #FF8E8E);
+            color: white;
+        }
+
+        .badge-video {
+            background: linear-gradient(45deg, var(--accent), #4ECDC4);
+            color: white;
+        }
+
+        .badge-news {
+            background: linear-gradient(45deg, var(--warning), #FFE066);
+            color: #333;
+        }
+
+        /* Profile Page Styles */
+        .profile-container {
+            display: flex;
+            gap: 35px;
+        }
+
+        .profile-info {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            margin-right: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-details h3 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .profile-details p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 35px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
+        }
+
+        /* Upload Form Styles */
+        .upload-form {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            flex: 1;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .upload-form h3 {
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            color: white;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        .upload-form .form-group label {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .upload-form .form-group input,
+        .upload-form .form-group select,
+        .upload-form .form-group textarea {
+            background: rgba(255, 255, 255, 0.12);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.05rem;
+        }
+
+        .upload-form .form-group input::placeholder,
+        .upload-form .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .upload-form .submit-btn {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            margin-top: 20px;
+        }
+
+        /* History Page Specific Styles */
+        .history-item {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 22px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(10px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .history-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 1.3rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .history-content {
+            flex: 1;
+        }
+
+        .history-action {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .history-details {
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 8px;
+            font-size: 1.05rem;
+        }
+
+        .history-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .nav-bar {
+                width: 220px;
+            }
+
+            .search-input {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .search-input {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .dashboard-content {
+                flex-direction: column;
+            }
+
+            .nav-bar {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 15px;
+            }
+
+            .nav-btn {
+                width: 45%;
+                margin: 8px;
+                padding: 14px 16px;
+                font-size: 1rem;
+            }
+
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .logo {
+                font-size: 3rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <h1 class="logo">AI Social Media HUB</h1>
+        <p class="tagline">Your Intelligent Gateway to Social Connectivity</p>
+        <button class="login-btn" id="loginBtn">Login to Dashboard</button>
+    </div>
+
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <h2>Login to Your Account</h2>
+            <form id="loginFormElement">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+            <button class="back-btn" id="backToLandingBtn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </button>
+        </div>
+    </div>
+
+    <!-- Welcome Page -->
+    <div class="welcome-page" id="welcomePage">
+        <div class="welcome-container">
+            <h2>Welcome to AI Social Media HUB!</h2>
+            <p id="welcomeMessage">We're excited to have you on board.</p>
+            <button class="popup-btn" id="continueBtn">Continue to Dashboard</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">AI Social Media HUB</h1>
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search content...">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <!-- Navigation Bar -->
+            <div class="nav-bar">
+                <button class="nav-btn active" data-page="dashboardPage">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </button>
+                <button class="nav-btn" data-page="posts">
+                    <i class="fas fa-newspaper"></i> Posts
+                </button>
+                <button class="nav-btn" data-page="reels">
+                    <i class="fas fa-film"></i> Reels
+                </button>
+                <button class="nav-btn" data-page="videos">
+                    <i class="fas fa-play-circle"></i> Videos
+                </button>
+                <button class="nav-btn" data-page="news">
+                    <i class="fas fa-bullhorn"></i> News
+                </button>
+                <button class="nav-btn" data-page="history">
+                    <i class="fas fa-history"></i> History
+                </button>
+                <button class="nav-btn" data-page="profile">
+                    <i class="fas fa-user"></i> Profile
+                </button>
+                <button class="nav-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Dashboard Page (Mixed Content) -->
+                <div class="page active" id="dashboardPage">
+                    <h2 class="page-title">Dashboard - All Content</h2>
+                    <div class="cards-container" id="dashboardContainer">
+                        <!-- Mixed content will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Posts Page -->
+                <div class="page" id="posts">
+                    <h2 class="page-title">Trending Posts</h2>
+                    <div class="cards-container" id="postsContainer">
+                        <!-- Posts will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Reels Page -->
+                <div class="page" id="reels">
+                    <h2 class="page-title">Popular Reels</h2>
+                    <div class="cards-container" id="reelsContainer">
+                        <!-- Reels will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Videos Page -->
+                <div class="page" id="videos">
+                    <h2 class="page-title">Trending Videos</h2>
+                    <div class="cards-container" id="videosContainer">
+                        <!-- Videos will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- News Page -->
+                <div class="page" id="news">
+                    <h2 class="page-title">Latest News</h2>
+                    <div class="cards-container" id="newsContainer">
+                        <!-- News will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- History Page -->
+                <div class="page" id="history">
+                    <h2 class="page-title">Your Activity History</h2>
+                    <div class="cards-container" id="historyContainer">
+                        <!-- History items will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Profile Page -->
+                <div class="page" id="profile">
+                    <h2 class="page-title">Your Profile</h2>
+                    <div class="profile-container">
+                        <div class="profile-info">
+                            <div class="profile-header">
+                                <div class="profile-avatar" id="profileAvatar">U</div>
+                                <div class="profile-details">
+                                    <h3 id="profileName">User Name</h3>
+                                    <p id="profileEmail">user@example.com</p>
+                                </div>
+                            </div>
+                            <div class="profile-stats">
+                                <div class="stat">
+                                    <div class="stat-value" id="postsCount">0</div>
+                                    <div class="stat-label">Posts</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="followersCount">0</div>
+                                    <div class="stat-label">Followers</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="followingCount">0</div>
+                                    <div class="stat-label">Following</div>
+                                </div>
+                            </div>
+                            <h3>About Me</h3>
+                            <p>AI enthusiast and social media explorer. Passionate about connecting with like-minded
+                                individuals and discovering trending content.</p>
+                        </div>
+                        <div class="upload-form">
+                            <h3>Upload New Content</h3>
+                            <form id="uploadForm">
+                                <div class="form-group">
+                                    <label for="contentType">Content Type</label>
+                                    <select id="contentType" class="form-group input">
+                                        <option value="post">Post</option>
+                                        <option value="reel">Reel</option>
+                                        <option value="video">Video</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contentTitle">Title</label>
+                                    <input type="text" id="contentTitle" placeholder="Enter content title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contentDescription">Description</label>
+                                    <textarea id="contentDescription" rows="3" placeholder="Enter content description"
+                                        required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contentFile">Upload File</label>
+                                    <input type="file" id="contentFile">
+                                </div>
+                                <button type="submit" class="submit-btn">Upload Content</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for cards
+        const sampleData = {
+            posts: [
+                { user: "Alex Johnson", content: "Just discovered this amazing AI tool that can generate social media content in seconds! #AI #SocialMedia", time: "2 hours ago", likes: 245, comments: 32, shares: 15, type: "post" },
+                { user: "Tech Enthusiast", content: "The future of social media is here with AI-powered content curation. What are your thoughts?", time: "5 hours ago", likes: 189, comments: 41, shares: 9, type: "post" },
+                { user: "Digital Marketer", content: "How AI is revolutionizing social media marketing strategies. A thread 👇", time: "1 day ago", likes: 321, comments: 56, shares: 42, type: "post" },
+                { user: "AI Researcher", content: "New research shows how AI can predict viral content with 85% accuracy. Game changer for content creators!", time: "1 day ago", likes: 412, comments: 67, shares: 38, type: "post" },
+                { user: "Social Media Pro", content: "5 AI tools every social media manager should be using in 2023", time: "2 days ago", likes: 567, comments: 89, shares: 124, type: "post" },
+                { user: "Future Tech", content: "Imagine social media platforms where AI connects you with exactly the content and people you need. We're almost there!", time: "3 days ago", likes: 298, comments: 45, shares: 21, type: "post" }
+            ],
+            reels: [
+                { user: "Creative AI", content: "Watch how AI transforms simple sketches into stunning digital art in seconds!", time: "1 hour ago", likes: 1245, comments: 89, type: "reel" },
+                { user: "Tech Trends", content: "The most mind-blowing AI applications you've never heard of", time: "3 hours ago", likes: 2310, comments: 156, type: "reel" },
+                { user: "AI Daily", content: "How AI is changing the way we create and consume video content", time: "6 hours ago", likes: 1876, comments: 98, type: "reel" },
+                { user: "Digital Creator", content: "Creating viral content with AI assistance - my workflow revealed", time: "1 day ago", likes: 3421, comments: 213, type: "reel" },
+                { user: "Future Vision", content: "AI-generated animations that will blow your mind", time: "1 day ago", likes: 2987, comments: 187, type: "reel" },
+                { user: "AI Artistry", content: "From text to video: How AI is revolutionizing content creation", time: "2 days ago", likes: 4123, comments: 298, type: "reel" }
+            ],
+            videos: [
+                { user: "AI Explained", content: "How Social Media Algorithms Work - The AI Behind Your Feed", time: "4 hours ago", views: "12K", likes: 876, type: "video" },
+                { user: "Tech Insider", content: "The Future of AI in Social Media - What to Expect in 2024", time: "8 hours ago", views: "24K", likes: 1543, type: "video" },
+                { user: "Digital Future", content: "AI-Powered Content Creation: From Zero to Viral", time: "1 day ago", views: "56K", likes: 3210, type: "video" },
+                { user: "Social AI", content: "How AI Detects and Fights Misinformation on Social Platforms", time: "1 day ago", views: "38K", likes: 1987, type: "video" },
+                { user: "AI Trends", content: "The Rise of AI Influencers - Are They the Future?", time: "2 days ago", views: "72K", likes: 4321, type: "video" },
+                { user: "Tech Vision", content: "AI and Social Media: The Ethical Dilemmas We Face", time: "3 days ago", views: "41K", likes: 2109, type: "video" }
+            ],
+            news: [
+                { user: "Tech News Daily", content: "Breaking: Major Social Platform Integrates Advanced AI for Content Moderation", time: "1 hour ago", source: "TechCrunch", type: "news" },
+                { user: "AI Updates", content: "New AI Model Can Generate Social Media Posts That Go Viral 80% of the Time", time: "3 hours ago", source: "The Verge", type: "news" },
+                { user: "Digital Times", content: "How AI is Helping Small Businesses Succeed on Social Media", time: "6 hours ago", source: "Forbes", type: "news" },
+                { user: "Future Tech News", content: "Social Media Giants Invest Billions in AI Research for Next-Gen Platforms", time: "1 day ago", source: "Wired", type: "news" },
+                { user: "Innovation Daily", content: "AI-Powered Social Media Tools That Are Changing Digital Marketing", time: "1 day ago", source: "Business Insider", type: "news" },
+                { user: "Tech Report", content: "The Impact of AI on Social Media Engagement: New Study Reveals Surprising Results", time: "2 days ago", source: "Harvard Business Review", type: "news" }
+            ],
+            history: [
+                { action: "Liked", content: "AI-Powered Content Creation Guide", time: "2 hours ago" },
+                { action: "Commented on", content: "The Future of Social Media Algorithms", time: "5 hours ago" },
+                { action: "Shared", content: "Top 10 AI Tools for Social Media Managers", time: "1 day ago" },
+                { action: "Posted", content: "My experience with AI-generated content", time: "1 day ago" },
+                { action: "Followed", content: "AI Trends Channel", time: "2 days ago" },
+                { action: "Saved", content: "AI Ethics in Social Media Discussion", time: "3 days ago" },
+                { action: "Watched", content: "AI in Social Media Documentary", time: "4 days ago" },
+                { action: "Bookmarked", content: "AI Content Strategy Guide", time: "5 days ago" },
+                { action: "Reacted", content: "Latest AI Social Media Update", time: "1 week ago" },
+                { action: "Joined", content: "AI Social Media Community", time: "1 week ago" }
+            ]
+        };
+
+        // Generate cards for each page
+        function generateCards(containerId, data, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            if (type === 'history') {
+                // Special handling for history items
+                data.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+
+                    // Get appropriate icon based on action
+                    let iconClass = 'fas fa-history';
+                    if (item.action === 'Liked') iconClass = 'fas fa-heart';
+                    else if (item.action === 'Commented') iconClass = 'fas fa-comment';
+                    else if (item.action === 'Shared') iconClass = 'fas fa-share';
+                    else if (item.action === 'Posted') iconClass = 'fas fa-pen';
+                    else if (item.action === 'Followed') iconClass = 'fas fa-user-plus';
+                    else if (item.action === 'Saved') iconClass = 'fas fa-bookmark';
+                    else if (item.action === 'Watched') iconClass = 'fas fa-eye';
+                    else if (item.action === 'Bookmarked') iconClass = 'fas fa-bookmark';
+                    else if (item.action === 'Reacted') iconClass = 'fas fa-smile';
+                    else if (item.action === 'Joined') iconClass = 'fas fa-users';
+
+                    historyItem.innerHTML = `
+                        <div class="history-icon">
+                            <i class="${iconClass}"></i>
+                        </div>
+                        <div class="history-content">
+                            <div class="history-action">${item.action}: ${item.content}</div>
+                            <div class="history-time">${item.time}</div>
+                        </div>
+                    `;
+
+                    container.appendChild(historyItem);
+                });
+            } else {
+                // Regular card generation for other pages
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+
+                    // Get badge class based on content type
+                    let badgeClass = '';
+                    let badgeText = '';
+                    if (item.type === 'post') {
+                        badgeClass = 'badge-post';
+                        badgeText = 'POST';
+                    } else if (item.type === 'reel') {
+                        badgeClass = 'badge-reel';
+                        badgeText = 'REEL';
+                    } else if (item.type === 'video') {
+                        badgeClass = 'badge-video';
+                        badgeText = 'VIDEO';
+                    } else if (item.type === 'news') {
+                        badgeClass = 'badge-news';
+                        badgeText = 'NEWS';
+                    }
+
+                    let actionsHtml = '';
+                    if (item.type === 'post' || item.type === 'reel') {
+                        actionsHtml = `
+                            <div class="card-actions">
+                                <button class="action-btn"><i class="fas fa-heart"></i> ${item.likes}</button>
+                                <button class="action-btn"><i class="fas fa-comment"></i> ${item.comments}</button>
+                                <button class="action-btn"><i class="fas fa-share"></i> ${item.shares || 'Share'}</button>
+                            </div>
+                        `;
+                    } else if (item.type === 'video') {
+                        actionsHtml = `
+                            <div class="card-actions">
+                                <button class="action-btn"><i class="fas fa-eye"></i> ${item.views}</button>
+                                <button class="action-btn"><i class="fas fa-heart"></i> ${item.likes}</button>
+                                <button class="action-btn"><i class="fas fa-share"></i> Share</button>
+                            </div>
+                        `;
+                    } else if (item.type === 'news') {
+                        actionsHtml = `
+                            <div class="card-actions">
+                                <span>Source: ${item.source}</span>
+                                <button class="action-btn"><i class="fas fa-share"></i> Share</button>
+                            </div>
+                        `;
+                    }
+
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="card-avatar">${item.user.charAt(0)}</div>
+                            <div>
+                                <div class="card-user">${item.user} <span class="content-badge ${badgeClass}">${badgeText}</span></div>
+                                <div class="card-time">${item.time}</div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            ${item.content}
+                        </div>
+                        ${item.type !== 'history' ? `<div class="card-image">${item.type.toUpperCase()} CONTENT</div>` : ''}
+                        ${actionsHtml}
+                    `;
+
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        // Generate mixed content for dashboard
+        function generateDashboardContent() {
+            const container = document.getElementById('dashboardContainer');
+            container.innerHTML = '';
+
+            // Combine all content types
+            const allContent = [
+                ...sampleData.posts,
+                ...sampleData.reels,
+                ...sampleData.videos,
+                ...sampleData.news
+            ];
+
+            // Sort by time (newest first) - simple implementation
+            allContent.sort((a, b) => {
+                // Simple time sorting - in real app you'd parse actual dates
+                return a.time.localeCompare(b.time);
+            });
+
+            generateCards('dashboardContainer', allContent, 'dashboard');
+        }
+
+        // Search functionality
+        function searchContent(query) {
+            if (!query.trim()) {
+                // If search is empty, show all content
+                const activePage = document.querySelector('.page.active').id;
+                if (activePage === 'dashboardPage') {
+                    generateDashboardContent();
+                } else {
+                    initializeCards();
+                }
+                return;
+            }
+
+            const searchTerm = query.toLowerCase();
+            const allContent = [
+                ...sampleData.posts,
+                ...sampleData.reels,
+                ...sampleData.videos,
+                ...sampleData.news
+            ];
+
+            const filteredContent = allContent.filter(item =>
+                item.content.toLowerCase().includes(searchTerm) ||
+                item.user.toLowerCase().includes(searchTerm) ||
+                (item.source && item.source.toLowerCase().includes(searchTerm))
+            );
+
+            // Get current active page
+            const activePage = document.querySelector('.page.active').id;
+            const containerId = activePage === 'dashboardPage' ? 'dashboardContainer' : `${activePage}Container`;
+
+            if (activePage === 'history') {
+                // For history page, filter history items
+                const filteredHistory = sampleData.history.filter(item =>
+                    item.content.toLowerCase().includes(searchTerm) ||
+                    item.action.toLowerCase().includes(searchTerm)
+                );
+                generateCards(containerId, filteredHistory, 'history');
+            } else {
+                generateCards(containerId, filteredContent, activePage === 'dashboardPage' ? 'dashboard' : activePage);
+            }
+        }
+
+        // Initialize all cards
+        function initializeCards() {
+            generateCards('postsContainer', sampleData.posts, 'posts');
+            generateCards('reelsContainer', sampleData.reels, 'reels');
+            generateCards('videosContainer', sampleData.videos, 'videos');
+            generateCards('newsContainer', sampleData.news, 'news');
+            generateCards('historyContainer', sampleData.history, 'history');
+            generateDashboardContent();
+        }
+
+        // Initialize with some random stats
+        function initializeStats() {
+            document.getElementById('postsCount').textContent = Math.floor(Math.random() * 50) + 10;
+            document.getElementById('followersCount').textContent = Math.floor(Math.random() * 1000) + 100;
+            document.getElementById('followingCount').textContent = Math.floor(Math.random() * 500) + 50;
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize stats
+            initializeStats();
+
+            // Login button click - goes to login page
+            document.getElementById('loginBtn').addEventListener('click', function () {
+                document.getElementById('landingPage').style.display = 'none';
+                document.getElementById('loginPage').style.display = 'flex';
+            });
+
+            // Back to landing page from login
+            document.getElementById('backToLandingBtn').addEventListener('click', function () {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('landingPage').style.display = 'flex';
+            });
+
+            // Login form submission - goes to welcome page
+            document.getElementById('loginFormElement').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+
+                // Store user data
+                localStorage.setItem('userName', name);
+                localStorage.setItem('userEmail', email);
+
+                // Show welcome page
+                document.getElementById('welcomeMessage').textContent = `Welcome, ${name}! We're excited to have you on board.`;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('welcomePage').style.display = 'flex';
+            });
+
+            // Continue to dashboard from welcome page
+            document.getElementById('continueBtn').addEventListener('click', function () {
+                document.getElementById('welcomePage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+
+                // Update profile with user data
+                const userName = localStorage.getItem('userName');
+                const userEmail = localStorage.getItem('userEmail');
+
+                document.getElementById('profileName').textContent = userName;
+                document.getElementById('profileEmail').textContent = userEmail;
+                document.getElementById('profileAvatar').textContent = userName.charAt(0);
+
+                // Initialize cards
+                initializeCards();
+            });
+
+            // Navigation buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.id !== 'logoutBtn') {
+                    btn.addEventListener('click', function () {
+                        const pageId = this.getAttribute('data-page');
+
+                        // Update active button
+                        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // Show corresponding page
+                        document.querySelectorAll('.page').forEach(page => {
+                            page.classList.remove('active');
+                            if (page.id === pageId) {
+                                page.classList.add('active');
+                            }
+                        });
+
+                        // If dashboard is selected, generate mixed content
+                        if (pageId === 'dashboardPage') {
+                            generateDashboardContent();
+                        } else {
+                            // For other pages, ensure their content is loaded
+                            const containerId = `${pageId}Container`;
+                            if (pageId !== 'profile' && document.getElementById(containerId).innerHTML === '') {
+                                if (pageId === 'posts') generateCards(containerId, sampleData.posts, 'posts');
+                                else if (pageId === 'reels') generateCards(containerId, sampleData.reels, 'reels');
+                                else if (pageId === 'videos') generateCards(containerId, sampleData.videos, 'videos');
+                                else if (pageId === 'news') generateCards(containerId, sampleData.news, 'news');
+                                else if (pageId === 'history') generateCards(containerId, sampleData.history, 'history');
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Search functionality
+            document.getElementById('searchBtn').addEventListener('click', function () {
+                const query = document.getElementById('searchInput').value;
+                searchContent(query);
+            });
+
+            document.getElementById('searchInput').addEventListener('keyup', function (e) {
+                if (e.key === 'Enter') {
+                    const query = document.getElementById('searchInput').value;
+                    searchContent(query);
+                }
+            });
+
+            // Logout button
+            document.getElementById('logoutBtn').addEventListener('click', function () {
+                if (confirm('Are you sure you want to logout?')) {
+                    document.getElementById('dashboard').style.display = 'none';
+                    document.getElementById('landingPage').style.display = 'flex';
+                    document.getElementById('loginFormElement').reset();
+                    document.getElementById('searchInput').value = '';
+
+                    // Clear any active states
+                    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('[data-page="dashboardPage"]').classList.add('active');
+
+                    document.querySelectorAll('.page').forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === 'dashboardPage') {
+                            page.classList.add('active');
+                        }
+                    });
+                }
+            });
+
+            // Upload form
+            document.getElementById('uploadForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                alert('Content uploaded successfully!');
+                this.reset();
+
+                // Update posts count
+                const postsCount = document.getElementById('postsCount');
+                postsCount.textContent = parseInt(postsCount.textContent) + 1;
+            });
+        });
+    </script>
+</body>
+
+</html>
